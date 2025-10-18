@@ -9,13 +9,22 @@ type Config struct {
 	Args []string
 }
 
-var Commands map[string]Command = map[string]Command{
-	"exit": {
-		Name:     "Exit",
-		Callback: ExitCommand,
-	},
-	"echo": {
-		Name:     "Echo",
-		Callback: EchoCommand,
-	},
+var Commands map[string]Command
+
+func init() {
+	Commands = map[string]Command{
+		"exit": {
+			Name:     "Exit",
+			Callback: ExitCommand,
+		},
+		"echo": {
+			Name:     "Echo",
+			Callback: EchoCommand,
+		},
+		"type": {
+			Name:     "Type",
+			Callback: TypeCommand,
+		},
+	}
+
 }

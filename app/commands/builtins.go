@@ -30,3 +30,16 @@ func EchoCommand(config *Config) error {
 
 	return nil
 }
+
+func TypeCommand(config *Config) error {
+
+	_, exists := Commands[config.Args[0]]
+
+	if !exists {
+		fmt.Printf("%v: not found\n", config.Args[0])
+		return nil
+	}
+
+	fmt.Printf("%v is a shell builtin\n", config.Args[0])
+	return nil
+}
