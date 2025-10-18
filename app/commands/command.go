@@ -14,4 +14,8 @@ var Commands map[string]Command = map[string]Command{
 		Name:     "Exit",
 		Callback: ExitCommand,
 	},
+	"echo": {
+		Name:     "Echo",
+		Callback: EchoCommand,
+	},
 }
