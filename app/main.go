@@ -21,7 +21,13 @@ func main() {
 		command, exists := commands.Commands[strings.ToLower(clearedInput[0])]
 
 		if !exists {
-			fmt.Printf("%v: command not found\n", clearedInput[0])
+			config := commands.Config{
+				Args: clearedInput,
+			}
+			err := commands.ExecCommand(&config)
+			if err != nil {
+				fmt.Printf("%v", err)
+			}
 			continue
 		}
 		config := commands.Config{

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -47,16 +48,11 @@ func TypeCommand(config *Config) error {
 		return nil
 	}
 
-	path := os.Getenv("PATH")
+	foundPath := searchPath(cmdName)
 
-	splittedPath := strings.Split(path, ":")
-
-	for _, pathenv := range splittedPath {
-		foundPath := searchPath(pathenv, cmdName)
-		if foundPath != "" {
-			fmt.Printf("%v is %v\n", cmdName, foundPath)
-			return nil
-		}
+	if foundPath != "" {
+		fmt.Printf("%v is %v\n", cmdName, foundPath)
+		return nil
 
 	}
 
@@ -65,8 +61,26 @@ func TypeCommand(config *Config) error {
 	return nil
 }
 
-func searchPath(path string, cmdName string) string {
+func ExecCommand(config *Config) error {
+	cmdName := config.Args[0]
+	cmdArgs := config.Args[1:]
+
+	cmdPath := searchPath(cmdName)
+
+	if cmdPath == "" {
+		return fmt.Errorf("%v: not found\n", cmdName)
+	}
+
+	cmd := exec.Command(cmdPath, cmdArgs...)
+
+	cmd.Stdout = os.Stdout
+
+	return cmd.Run()
+}
+
+func searchPath(cmdName string) string {
 	found := ""
+
 	walkfn := func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
 			return filepath.SkipDir
@@ -77,10 +91,14 @@ func searchPath(path string, cmdName string) string {
 		}
 		return nil
 	}
-	filepath.Walk(path, walkfn)
-	if len(found) > 0 {
-		return found
+
+	for _, path := range strings.Split(os.Getenv("PATH"), ":") {
+		filepath.Walk(path, walkfn)
+		if len(found) > 0 {
+			return found
+		}
 	}
+
 	return ""
 
 }
