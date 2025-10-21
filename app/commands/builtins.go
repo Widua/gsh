@@ -71,7 +71,7 @@ func ExecCommand(config *Config) error {
 		return fmt.Errorf("%v: not found\n", cmdName)
 	}
 
-	cmd := exec.Command(cmdPath, cmdArgs...)
+	cmd := exec.Command(cmdName, cmdArgs...)
 
 	cmd.Stdout = os.Stdout
 
