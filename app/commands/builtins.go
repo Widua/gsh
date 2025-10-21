@@ -78,6 +78,11 @@ func ExecCommand(config *Config) error {
 	return cmd.Run()
 }
 
+func PwdCommand(config *Config) error {
+	fmt.Println(config.CurrentDirectory)
+	return nil
+}
+
 func searchPath(cmdName string) string {
 	found := ""
 

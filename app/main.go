@@ -19,10 +19,15 @@ func main() {
 		clearedInput := clearInput(splittedInput)
 
 		command, exists := commands.Commands[strings.ToLower(clearedInput[0])]
+		currentDir, err := os.Getwd()
+		if err != nil {
+			panic("Shell cannot work in current directory")
+		}
 
 		if !exists {
 			config := commands.Config{
-				Args: clearedInput,
+				Args:             clearedInput,
+				CurrentDirectory: currentDir,
 			}
 			err := commands.ExecCommand(&config)
 			if err != nil {
@@ -31,7 +36,8 @@ func main() {
 			continue
 		}
 		config := commands.Config{
-			Args: clearedInput[1:],
+			Args:             clearedInput[1:],
+			CurrentDirectory: currentDir,
 		}
 		error := command.Callback(&config)
 

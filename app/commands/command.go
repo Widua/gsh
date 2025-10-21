@@ -6,7 +6,8 @@ type Command struct {
 }
 
 type Config struct {
-	Args []string
+	Args             []string
+	CurrentDirectory string
 }
 
 var Commands map[string]Command
@@ -24,6 +25,10 @@ func init() {
 		"type": {
 			Name:     "Type",
 			Callback: TypeCommand,
+		},
+		"pwd": {
+			Name:     "Print Working Directory",
+			Callback: PwdCommand,
 		},
 	}
 
