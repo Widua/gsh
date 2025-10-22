@@ -83,6 +83,26 @@ func PwdCommand(config *Config) error {
 	return nil
 }
 
+func CdCommand(config *Config) error {
+
+	path := config.Args[0]
+
+	switch path[0] {
+
+	case '/':
+		fileInfo, err := os.Stat(path)
+		if err != nil {
+			return fmt.Errorf("cd: %v: No such file or directory", path)
+		}
+		if !fileInfo.IsDir() {
+			return fmt.Errorf("cd: not a directory: %v", path)
+		}
+		os.Chdir(path)
+	}
+	return nil
+
+}
+
 func searchPath(cmdName string) string {
 	found := ""
 

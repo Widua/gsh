@@ -30,6 +30,10 @@ func init() {
 			Name:     "Print Working Directory",
 			Callback: PwdCommand,
 		},
+		"cd": {
+			Name:     "Change Directory",
+			Callback: CdCommand,
+		},
 	}
 
 }

@@ -42,7 +42,7 @@ func main() {
 		error := command.Callback(&config)
 
 		if error != nil {
-			fmt.Printf("Error occurs: %v\n", error.Error())
+			fmt.Printf("%v\n", error.Error())
 		}
 
 	}
