@@ -87,6 +87,14 @@ func CdCommand(config *Config) error {
 
 	path := config.Args[0]
 
+	if path[0] == '~' {
+		home, err := os.UserHomeDir()
+		if err != nil {
+			return err
+		}
+		path = home + config.Args[0][1:]
+	}
+
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		return fmt.Errorf("cd: %v: No such file or directory", path)
